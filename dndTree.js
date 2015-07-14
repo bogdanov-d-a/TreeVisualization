@@ -160,7 +160,7 @@ d3.json("data.json", function(error, treeDataRaw) {
             }
         };
         countChildrenLevelWidth(0, root);
-        var newWidth = d3.max(levelWidth) * (maxLabelLength * 5); //maxLabelLength * 5px
+        var newWidth = d3.max(levelWidth) * (maxLabelLength * 6); //maxLabelLength * 6px
         tree = tree.size([newWidth, viewerHeight]);
 
         // Compute the new tree layout.
@@ -197,30 +197,14 @@ d3.json("data.json", function(error, treeDataRaw) {
             });
 
         nodeEnter.append("text")
-            .attr("x", function(d) {
-                return d.children || d._children ? -10 : 10;
-            })
+			.attr("y", -10)
             .attr("dy", ".35em")
             .attr('class', 'nodeText')
-            .attr("text-anchor", function(d) {
-                return d.children || d._children ? "end" : "start";
-            })
+            .attr("text-anchor", "middle")
             .text(function(d) {
                 return d.name;
             })
             .style("fill-opacity", 0);
-
-        // Update the text to reflect whether node has children or not.
-        node.select('text')
-            .attr("x", function(d) {
-                return d.children || d._children ? -10 : 10;
-            })
-            .attr("text-anchor", function(d) {
-                return d.children || d._children ? "end" : "start";
-            })
-            .text(function(d) {
-                return d.name;
-            });
 
         // Change the circle fill depending on whether it has children and is collapsed
         node.select("circle.nodeCircle")
