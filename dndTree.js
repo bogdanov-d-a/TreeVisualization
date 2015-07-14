@@ -1,5 +1,5 @@
 // Get JSON data
-treeJSON = d3.json("flare.json", function(error, treeDataRaw) {
+treeJSON = d3.json("data.json", function(error, treeDataRaw) {
 	var treeData = {
 		"name": "root",
 		"children": [
