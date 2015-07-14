@@ -113,8 +113,8 @@ d3.json("data.json", function(error, treeDataRaw) {
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
     function centerNode(source) {
         scale = zoomListener.scale();
-        x = -source.y0;
-        y = -source.x0;
+        x = -source.x0;
+        y = -source.y0;
         x = x * scale + viewerWidth / 2;
         y = y * scale + viewerHeight / 2;
         d3.select('g').transition()
@@ -169,12 +169,12 @@ d3.json("data.json", function(error, treeDataRaw) {
         var nodes = tree.nodes(root).reverse(),
             links = tree.links(nodes);
 
-        // Set widths between levels based on maxLabelLength.
+        // Set widths between levels
         nodes.forEach(function(d) {
-            d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+            // d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
-            // d.y = (d.depth * 500); //500px per level.
+            d.y = (d.depth * 250); //250px per level.
         });
 
         // Update the nodes…
@@ -246,7 +246,7 @@ d3.json("data.json", function(error, treeDataRaw) {
         var nodeExit = node.exit().transition()
             .duration(duration)
             .attr("transform", function(d) {
-                return "translate(" + source.y + "," + source.x + ")";
+                return "translate(" + source.x + "," + source.y + ")";
             })
             .remove();
 
