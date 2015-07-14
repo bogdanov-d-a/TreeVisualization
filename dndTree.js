@@ -33,8 +33,6 @@ d3.json("data.json", function(error, treeDataRaw) {
 	var treeData = getTreeDataRawSubtree(1);
 
     // Misc. variables
-    var totalNodes = 0;
-    var maxLabelLength = 0;
     var i = 0;
     var duration = 750;
     var root;
@@ -66,14 +64,6 @@ d3.json("data.json", function(error, treeDataRaw) {
             }
         }
     }
-
-    // Call visit function to establish maxLabelLength
-    visit(treeData, function(d) {
-        totalNodes++;
-        maxLabelLength = Math.max(d.name.length, maxLabelLength);
-    }, function(d) {
-        return d.children && d.children.length > 0 ? d.children : null;
-    });
 
 	// Define the zoom function for the zoomable tree
     function zoom() {
@@ -145,6 +135,14 @@ d3.json("data.json", function(error, treeDataRaw) {
     }
 
     function update(source) {
+		// Call visit function to establish maxLabelLength
+		var maxLabelLength = 0;
+		visit(treeData, function(d) {
+			maxLabelLength = Math.max(d.name.length, maxLabelLength);
+		}, function(d) {
+			return d.children && d.children.length > 0 ? d.children : null;
+		});
+
         // Compute the new width, function counts total children of root node and sets tree width accordingly.
         // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
         // This makes the layout more consistent.
