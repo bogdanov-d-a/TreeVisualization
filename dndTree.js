@@ -44,7 +44,7 @@ d3.json("data.json", function(error, treeDataRaw) {
     var viewerHeight = $(document).height();
 
     var tree = d3.layout.tree()
-        .size([viewerHeight, viewerWidth]);
+        .size([viewerWidth, viewerHeight]);
 
     // define a d3 diagonal projection for use by the node paths later on.
     var diagonal = d3.svg.diagonal()
@@ -145,7 +145,7 @@ d3.json("data.json", function(error, treeDataRaw) {
     }
 
     function update(source) {
-        // Compute the new height, function counts total children of root node and sets tree height accordingly.
+        // Compute the new width, function counts total children of root node and sets tree width accordingly.
         // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
         // This makes the layout more consistent.
         var levelWidth = [1];
@@ -162,8 +162,8 @@ d3.json("data.json", function(error, treeDataRaw) {
             }
         };
         countChildrenLevelWidth(0, root);
-        var newHeight = d3.max(levelWidth) * 50; // 50 pixels per line  
-        tree = tree.size([newHeight, viewerWidth]);
+        var newWidth = d3.max(levelWidth) * (maxLabelLength * 5); //maxLabelLength * 5px
+        tree = tree.size([newWidth, viewerHeight]);
 
         // Compute the new tree layout.
         var nodes = tree.nodes(root).reverse(),
