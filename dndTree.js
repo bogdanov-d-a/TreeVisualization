@@ -1,35 +1,40 @@
-// Get JSON data
+// Get JSON data and handle it
 d3.json("data.json", function(error, treeDataRaw) {
-	if (error) throw error;
+	// Handle treeDataRaw get error
+	if (error) {
+		throw error;
+	}
 
-	function getElemByNumber(number) {
+	function getTreeDataRawNode(number) {
 		for (var i = 0; i < treeDataRaw.length; ++i) {
 			if (treeDataRaw[i].nodeNumber == number) {
 				return treeDataRaw[i];
 			}
 		}
+		throw new Error("Node not found");
 	}
 
-	function getSubtree(rootNumber) {
-		var root = getElemByNumber(rootNumber);
+	// Get treeDataRaw subtree in usual format
+	function getTreeDataRawSubtree(rootNumber) {
+		var root = getTreeDataRawNode(rootNumber);
 		var result = { "name": root.title };
 
 		if (root.leftChild) {
 			result.children = [
-				getSubtree(root.leftChild),
-				getSubtree(root.rightChild)
+				getTreeDataRawSubtree(root.leftChild),
+				getTreeDataRawSubtree(root.rightChild)
 			];
 		}
 
 		return result;
 	};
 
-	var treeData = getSubtree(1);
+	// Initialize tree data
+	var treeData = getTreeDataRawSubtree(1);
 
-    // Calculate total nodes, max label length
+    // Misc. variables
     var totalNodes = 0;
     var maxLabelLength = 0;
-    // Misc. variables
     var i = 0;
     var duration = 750;
     var root;
@@ -48,7 +53,6 @@ d3.json("data.json", function(error, treeDataRaw) {
         });
 
     // A recursive helper function for performing some setup by walking through all nodes
-
     function visit(parent, visitFn, childrenFn) {
         if (!parent) return;
 
@@ -67,18 +71,14 @@ d3.json("data.json", function(error, treeDataRaw) {
     visit(treeData, function(d) {
         totalNodes++;
         maxLabelLength = Math.max(d.name.length, maxLabelLength);
-
     }, function(d) {
         return d.children && d.children.length > 0 ? d.children : null;
     });
 
-
 	// Define the zoom function for the zoomable tree
-
     function zoom() {
         svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
-
 
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
@@ -89,6 +89,7 @@ d3.json("data.json", function(error, treeDataRaw) {
         .attr("height", viewerHeight)
         .attr("class", "overlay")
         .call(zoomListener);
+
 
     // Helper functions for collapsing and expanding nodes.
 
@@ -108,8 +109,8 @@ d3.json("data.json", function(error, treeDataRaw) {
         }
     }
 
-    // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
+    // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
     function centerNode(source) {
         scale = zoomListener.scale();
         x = -source.y0;
@@ -124,7 +125,6 @@ d3.json("data.json", function(error, treeDataRaw) {
     }
 
     // Toggle children function
-
     function toggleChildren(d) {
         if (d.children) {
             d._children = d.children;
@@ -137,7 +137,6 @@ d3.json("data.json", function(error, treeDataRaw) {
     }
 
     // Toggle children on click.
-
     function click(d) {
         if (d3.event.defaultPrevented) return; // click suppressed
         d = toggleChildren(d);
