@@ -1,12 +1,152 @@
 [
 	{
-		"nodeNumber": 0,
-		"title": "title",
+		"nodeNumber": 1,
+		"title": "лаб.2",
 		"taskID": null,
-		"passMark": "passMark",
+		"passMark": "1.500",
+		"leftChild": 2,
+		"rightChild": 3,
+		"passed": null,
+		"failed": null
+	},
+	{
+		"nodeNumber": 2,
+		"title": "РГР: кластеризация объектов",
+		"taskID": null,
+		"passMark": "1.500",
+		"leftChild": 4,
+		"rightChild": 5,
+		"passed": null,
+		"failed": null
+	},
+	{
+		"nodeNumber": 3,
+		"title": "ПРОЕКТ/ИТОГ ТЕСТ",
+		"taskID": null,
+		"passMark": "1.500",
+		"leftChild": 6,
+		"rightChild": 7,
+		"passed": null,
+		"failed": null
+	},
+	{
+		"nodeNumber": 4,
+		"title": "Глоссарий:Глоссарий по модулю2: условная оптимизация",
+		"taskID": null,
+		"passMark": "0.500",
+		"leftChild": 8,
+		"rightChild": 9,
+		"passed": null,
+		"failed": null
+	},
+	{
+		"nodeNumber": 5,
+		"title": "хор",
+		"taskID": null,
+		"passMark": null,
 		"leftChild": null,
 		"rightChild": null,
-		"passed": 0,
+		"passed": 1,
+		"failed": 0
+	},
+	{
+		"nodeNumber": 6,
+		"title": "хор",
+		"taskID": null,
+		"passMark": null,
+		"leftChild": null,
+		"rightChild": null,
+		"passed": 2,
+		"failed": 0
+	},
+	{
+		"nodeNumber": 7,
+		"title": "лаб.5",
+		"taskID": null,
+		"passMark": "0.500",
+		"leftChild": 10,
+		"rightChild": 11,
+		"passed": null,
+		"failed": null
+	},
+	{
+		"nodeNumber": 8,
+		"title": "отл",
+		"taskID": null,
+		"passMark": null,
+		"leftChild": null,
+		"rightChild": null,
+		"passed": 2,
+		"failed": 0
+	},
+	{
+		"nodeNumber": 9,
+		"title": "Тест.1 (Безусловная оптимизация)",
+		"taskID": null,
+		"passMark": "0.500",
+		"leftChild": 12,
+		"rightChild": 13,
+		"passed": null,
+		"failed": null
+	},
+	{
+		"nodeNumber": 10,
+		"title": "удовл",
+		"taskID": null,
+		"passMark": null,
+		"leftChild": null,
+		"rightChild": null,
+		"passed": 3,
+		"failed": 0
+	},
+	{
+		"nodeNumber": 11,
+		"title": "неуд",
+		"taskID": null,
+		"passMark": null,
+		"leftChild": null,
+		"rightChild": null,
+		"passed": 4,
+		"failed": 0
+	},
+	{
+		"nodeNumber": 12,
+		"title": "Тест.1 (Безусловная оптимизация)",
+		"taskID": null,
+		"passMark": "1.500",
+		"leftChild": 14,
+		"rightChild": 15,
+		"passed": null,
+		"failed": null
+	},
+	{
+		"nodeNumber": 13,
+		"title": "хор",
+		"taskID": null,
+		"passMark": null,
+		"leftChild": null,
+		"rightChild": null,
+		"passed": 5,
+		"failed": 0
+	},
+	{
+		"nodeNumber": 14,
+		"title": "отл",
+		"taskID": null,
+		"passMark": null,
+		"leftChild": null,
+		"rightChild": null,
+		"passed": 2,
+		"failed": 2
+	},
+	{
+		"nodeNumber": 15,
+		"title": "отл",
+		"taskID": null,
+		"passMark": null,
+		"leftChild": null,
+		"rightChild": null,
+		"passed": 3,
 		"failed": 0
 	}
 ]

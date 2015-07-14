@@ -1,12 +1,28 @@
 // Get JSON data
 treeJSON = d3.json("data.json", function(error, treeDataRaw) {
-	var treeData = {
-		"name": "root",
-		"children": [
-			{ "name": "child1" },
-			{ "name": "child2" }
-		]
+	function getElemByNumber(number) {
+		for (var i = 0; i < treeDataRaw.length; ++i) {
+			if (treeDataRaw[i].nodeNumber == number) {
+				return treeDataRaw[i];
+			}
+		}
+	}
+
+	function getSubtree(rootNumber) {
+		var root = getElemByNumber(rootNumber);
+		var result = { "name": root.title };
+
+		if (root.leftChild) {
+			result.children = [
+				getSubtree(root.leftChild),
+				getSubtree(root.rightChild)
+			];
+		}
+
+		return result;
 	};
+
+	var treeData = getSubtree(1);
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
@@ -69,7 +85,7 @@ treeJSON = d3.json("data.json", function(error, treeDataRaw) {
         });
     }
     // Sort the tree initially incase the JSON isn't in a sorted order.
-    sortTree();
+    //sortTree();
 
     // TODO: Pan function, can be better implemented.
 
