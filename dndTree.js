@@ -1,5 +1,7 @@
 // Get JSON data
 d3.json("data.json", function(error, treeDataRaw) {
+	if (error) throw error;
+
 	function getElemByNumber(number) {
 		for (var i = 0; i < treeDataRaw.length; ++i) {
 			if (treeDataRaw[i].nodeNumber == number) {
