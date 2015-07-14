@@ -149,19 +149,20 @@ d3.json("data.json", function(error, treeDataRaw) {
         // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
         // This makes the layout more consistent.
         var levelWidth = [1];
-        var childCount = function(level, n) {
-
+        function countChildrenLevelWidth(level, n) {
             if (n.children && n.children.length > 0) {
-                if (levelWidth.length <= level + 1) levelWidth.push(0);
+                if (levelWidth.length <= level + 1) {
+					levelWidth.push(0);
+				}
 
                 levelWidth[level + 1] += n.children.length;
                 n.children.forEach(function(d) {
-                    childCount(level + 1, d);
+                    countChildrenLevelWidth(level + 1, d);
                 });
             }
         };
-        childCount(0, root);
-        var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
+        countChildrenLevelWidth(0, root);
+        var newHeight = d3.max(levelWidth) * 50; // 50 pixels per line  
         tree = tree.size([newHeight, viewerWidth]);
 
         // Compute the new tree layout.
