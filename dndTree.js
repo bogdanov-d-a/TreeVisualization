@@ -242,13 +242,13 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 
 		// Update the links…
-		var link = svgGroup.selectAll("path.link")
+		var gLinks = svgGroup.selectAll("path.link")
 			.data(links, function(d) {
 				return d.target.id;
 			});
 
 		// Enter any new links at the parent's previous position.
-		link.enter().insert("path", "g")
+		gLinks.enter().insert("path", "g")
 			.attr("class", "link")
 			.attr("d", function(d) {
 				var o = {
@@ -262,12 +262,12 @@ d3.json("data.json", function(error, treeDataRaw) {
 			});
 
 		// Transition links to their new position.
-		link.transition()
+		gLinks.transition()
 			.duration(duration)
 			.attr("d", diagonal);
 
 		// Transition exiting nodes to the parent's new position.
-		link.exit().transition()
+		gLinks.exit().transition()
 			.duration(duration)
 			.attr("d", function(d) {
 				var o = {
