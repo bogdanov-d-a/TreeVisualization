@@ -191,10 +191,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 		nodeEnter.append("circle")
 			.attr('class', 'nodeCircle')
-			.attr("r", 0)
-			.style("fill", function(d) {
-				return d._children ? "lightsteelblue" : "#fff";
-			});
+			.attr("r", 4.5);
 
 		nodeEnter.append("text")
 			.attr("y", -10)
@@ -208,7 +205,6 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 		// Change the circle fill depending on whether it has children and is collapsed
 		gNodes.select("circle.nodeCircle")
-			.attr("r", 4.5)
 			.style("fill", function(d) {
 				return d._children ? "lightsteelblue" : "#fff";
 			});
