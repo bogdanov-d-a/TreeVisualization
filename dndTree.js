@@ -241,6 +241,8 @@ d3.json("data.json", function(error, treeDataRaw) {
 			.attr("d", diagonal);
 
 		linkUpdate.select("text")
+			.attr("x", function(d) { return (d.source.x + d.target.x) / 2; })
+			.attr("y", function(d) { return (d.source.y + d.target.y) / 2; })
 			.style("fill-opacity", 1);
 
 
