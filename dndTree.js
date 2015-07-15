@@ -34,7 +34,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 	// Misc. variables
 	var assignedKeys = 0;
-	var duration = 750;
+	var duration = 2500;
 	var root;
 
 	// size of the diagram
@@ -192,7 +192,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 		nodeEnter.append("circle")
 			.attr('class', 'nodeCircle')
-			.attr("r", 4.5);
+			.attr("r", 0);
 
 		nodeEnter.append("text")
 			.attr("y", -10)
@@ -211,6 +211,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 				return d._children ? "lightsteelblue" : "#fff";
 			});
 
+
 		// Transition nodes to their new position.
 		var nodeUpdate = gNodes.transition()
 			.duration(duration)
@@ -218,7 +219,9 @@ d3.json("data.json", function(error, treeDataRaw) {
 				return "translate(" + d.x + "," + d.y + ")";
 			});
 
-		// Fade the text in
+		nodeUpdate.select("circle")
+			.attr("r", 4.5);
+
 		nodeUpdate.select("text")
 			.style("fill-opacity", 1);
 
