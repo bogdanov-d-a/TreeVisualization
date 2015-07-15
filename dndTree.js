@@ -37,9 +37,6 @@ d3.json("data.json", function(error, treeDataRaw) {
 	var viewerWidth = $(document).width();
 	var viewerHeight = $(document).height();
 
-	var tree = d3.layout.tree()
-		.size([viewerWidth, viewerHeight]);
-
 	// define a d3 diagonal projection for use by the node paths later on.
 	var diagonal = d3.svg.diagonal()
 		.projection(function(d) {
@@ -150,18 +147,19 @@ d3.json("data.json", function(error, treeDataRaw) {
 		};
 		countChildrenLevelWidth(0, root);
 		var newWidth = d3.max(levelWidth) * (maxLabelLength * 6); //maxLabelLength * 6px
-		tree = tree.size([newWidth, viewerHeight]);
+		var tree = d3.layout.tree()
+			.size([newWidth, viewerHeight]);
 
 		// Compute the new tree layout.
-		var nodes = tree.nodes(root).reverse(),
+		var nodes = tree.nodes(root),
 			links = tree.links(nodes);
 
-		// Set widths between levels
+		// Set heights between levels
 		nodes.forEach(function(d) {
-			// d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+			d.y = (d.depth * (maxLabelLength * 3)); //maxLabelLength * 3px
 			// alternatively to keep a fixed scale one can set a fixed depth per level
 			// Normalize for fixed-depth by commenting out below line
-			d.y = (d.depth * 250); //250px per level.
+			// d.y = (d.depth * 250); //250px per level.
 		});
 
 		// Update the nodes…
