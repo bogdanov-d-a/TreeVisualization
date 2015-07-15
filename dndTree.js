@@ -33,7 +33,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 	var treeData = getTreeDataRawSubtree(1);
 
 	// Misc. variables
-	var i = 0;
+	var assignedKeys = 0;
 	var duration = 750;
 	var root;
 
@@ -178,7 +178,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 		// Update the nodes…
 		var gNodes = svgGroup.selectAll("g.node")
 			.data(nodes, function(d) {
-				return d.id || (d.id = ++i);
+				return d.id || (d.id = ++assignedKeys);
 			});
 
 		// Enter any new nodes at the parent's previous position.
