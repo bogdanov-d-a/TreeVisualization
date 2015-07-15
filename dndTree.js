@@ -29,9 +29,6 @@ d3.json("data.json", function(error, treeDataRaw) {
 		return result;
 	};
 
-	// Initialize tree data
-	var treeData = getTreeDataRawSubtree(1);
-
 	// Misc. variables
 	var assignedKeys = 0;
 	var duration = 2500;
@@ -137,7 +134,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 	function update(source) {
 		// Call visit function to establish maxLabelLength
 		var maxLabelLength = 0;
-		visit(treeData, function(d) {
+		visit(root, function(d) {
 			maxLabelLength = Math.max(d.name.length, maxLabelLength);
 		}, function(d) {
 			return d.children && d.children.length > 0 ? d.children : null;
@@ -292,7 +289,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 	var svgGroup = baseSvg.append("g");
 
 	// Define the root
-	root = treeData;
+	root = getTreeDataRawSubtree(1);
 	root.x0 = viewerHeight / 2;
 	root.y0 = 0;
 
