@@ -40,7 +40,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 	// Misc. variables
 	var assignedKeys = 0;
-	var duration = 2500;
+	var duration = 750;
 
 	// size of pass bar
 	var passBarWidth = 25;
@@ -165,7 +165,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 			.attr("r", 0);
 
 		nodeEnter.append("text")
-			.attr("y", -10)
+			.attr("y", -14)
 			.attr("dy", ".35em")
 			.attr('class', 'nodeText')
 			.attr("text-anchor", "middle")
