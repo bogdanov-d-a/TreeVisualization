@@ -129,38 +129,11 @@ d3.json("data.json", function(error, treeDataRaw) {
 			return d.children && d.children.length > 0 ? d.children : null;
 		});
 
-		// Compute the new width, function counts total children of root node and sets tree width accordingly.
-		// This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
-		// This makes the layout more consistent.
-		var levelWidth = [1];
-		function countChildrenLevelWidth(level, n) {
-			if (n.children && n.children.length > 0) {
-				while (levelWidth.length <= level + 1) {
-					levelWidth.push(0);
-				}
-
-				levelWidth[level + 1] += n.children.length;
-				n.children.forEach(function(d) {
-					countChildrenLevelWidth(level + 1, d);
-				});
-			}
-		};
-		countChildrenLevelWidth(0, root);
-		var newWidth = d3.max(levelWidth) * (maxLabelLength * 6); //maxLabelLength * 6px
-		var tree = d3.layout.tree()
-			.size([newWidth, viewerHeight]);
-
 		// Compute the new tree layout.
+		var tree = d3.layout.tree()
+			.nodeSize([maxLabelLength * 6, maxLabelLength * 4]);
 		var nodes = tree.nodes(root),
 			links = tree.links(nodes);
-
-		// Set heights between levels
-		nodes.forEach(function(d) {
-			d.y = (d.depth * (maxLabelLength * 3)); //maxLabelLength * 3px
-			// alternatively to keep a fixed scale one can set a fixed depth per level
-			// Normalize for fixed-depth by commenting out below line
-			// d.y = (d.depth * 250); //250px per level.
-		});
 
 		// Update the nodes…
 		var gNodes = svgGroup.selectAll("g.node")
