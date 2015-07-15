@@ -181,6 +181,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 				return d.id || (d.id = ++assignedKeys);
 			});
 
+
 		// Enter any new nodes at the parent's previous position.
 		var nodeEnter = gNodes.enter().append("g")
 			.attr("class", "node")
@@ -203,6 +204,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 			})
 			.style("fill-opacity", 0);
 
+
 		// Change the circle fill depending on whether it has children and is collapsed
 		gNodes.select("circle.nodeCircle")
 			.style("fill", function(d) {
@@ -220,6 +222,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 		nodeUpdate.select("text")
 			.style("fill-opacity", 1);
 
+
 		// Transition exiting nodes to the parent's new position.
 		var nodeExit = gNodes.exit().transition()
 			.duration(duration)
@@ -233,6 +236,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 		nodeExit.select("text")
 			.style("fill-opacity", 0);
+
 
 		// Update the links…
 		var link = svgGroup.selectAll("path.link")
