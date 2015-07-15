@@ -224,8 +224,8 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 		linkEnter.append("text")
 			.attr('class', 'linkText')
-			.attr("x", function(d) { return (d.source.x + d.target.x) / 2; })
-			.attr("y", function(d) { return (d.source.y + d.target.y) / 2; })
+			.attr("x", source.x0)
+			.attr("y", source.y0)
 			.attr("text-anchor", "middle")
 			.text(function(d) {
 				return "no info";
