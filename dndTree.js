@@ -31,6 +31,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 		}
 		else
 		{
+			result.passFailRatio = "" + root.passed + " / " + root.failed;
 			result.passTotalRatio = root.passed / (root.passed + root.failed);
 		}
 
@@ -174,24 +175,32 @@ d3.json("data.json", function(error, treeDataRaw) {
 			.style("fill-opacity", 0);
 
 
-		// Add pass bars for leaf nodes
+		// Add pass info for leaf nodes
 		var leafNodes = nodeEnter.filter(function(d, i) {
 			return (!d.children && !d._children);
 		});
 
 		leafNodes.append("rect")
 			.attr("x", -passBarWidth / 2)
-			.attr("y", 10)
+			.attr("y", 20)
 			.attr("width", function(d) { return passBarWidth * d.passTotalRatio; })
 			.attr("height", passBarHeight)
 			.style("fill", "green");
 
 		leafNodes.append("rect")
 			.attr("x", function(d) { return -passBarWidth / 2 + passBarWidth * d.passTotalRatio; })
-			.attr("y", 10)
+			.attr("y", 20)
 			.attr("width", function(d) { return passBarWidth * (1 - d.passTotalRatio); })
 			.attr("height", passBarHeight)
 			.style("fill", "red");
+
+		leafNodes.append("text")
+			.attr("y", 14)
+			.attr("dy", ".35em")
+			.attr("text-anchor", "middle")
+			.text(function(d) {
+				return d.passFailRatio;
+			});
 
 
 		// Change the circle fill depending on whether it has children and is collapsed
