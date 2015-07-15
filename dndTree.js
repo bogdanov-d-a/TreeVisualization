@@ -38,10 +38,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 	var viewerHeight = $(document).height();
 
 	// define a d3 diagonal projection for use by the node paths later on.
-	var diagonal = d3.svg.diagonal()
-		.projection(function(d) {
-			return [d.x, d.y];
-		});
+	diagonal = d3.svg.diagonal();
 
 	// A recursive helper function for performing some setup by walking through all nodes
 	function visit(parent, visitFn, childrenFn) {
@@ -202,14 +199,18 @@ d3.json("data.json", function(error, treeDataRaw) {
 
 
 		// Update the links…
-		var gLinks = svgGroup.selectAll("path.link")
+		var gLinks = svgGroup.selectAll("g.link")
 			.data(links, function(d) {
 				return d.target.id;
 			});
 
+
 		// Enter any new links at the parent's previous position.
-		gLinks.enter().insert("path", "g")
-			.attr("class", "link")
+		var linkEnter = gLinks.enter().insert("g", "g")
+			.attr("class", "link");
+
+		linkEnter.append("path")
+			.attr('class', 'linkPath')
 			.attr("d", function(d) {
 				var o = {
 					x: source.x0,
@@ -221,14 +222,34 @@ d3.json("data.json", function(error, treeDataRaw) {
 				});
 			});
 
+		linkEnter.append("text")
+			.attr('class', 'linkText')
+			.attr("x", function(d) { return (d.source.x + d.target.x) / 2; })
+			.attr("y", function(d) { return (d.source.y + d.target.y) / 2; })
+			.attr("text-anchor", "middle")
+			.text(function(d) {
+				return "no info";
+			})
+			.style("fill-opacity", 0);
+
+
 		// Transition links to their new position.
-		gLinks.transition()
-			.duration(duration)
+		var linkUpdate = gLinks.transition()
+			.duration(duration);
+
+		linkUpdate.select("path")
 			.attr("d", diagonal);
 
-		// Transition exiting nodes to the parent's new position.
-		gLinks.exit().transition()
+		linkUpdate.select("text")
+			.style("fill-opacity", 1);
+
+
+		// Transition exiting links to the parent's new position.
+		var linkExit = gLinks.exit().transition()
 			.duration(duration)
+			.remove();
+
+		linkExit.select("path")
 			.attr("d", function(d) {
 				var o = {
 					x: source.x,
@@ -238,8 +259,11 @@ d3.json("data.json", function(error, treeDataRaw) {
 					source: o,
 					target: o
 				});
-			})
-			.remove();
+			});
+
+		linkExit.select("text")
+			.style("fill-opacity", 0);
+
 
 		// Stash the old positions for transition.
 		nodes.forEach(function(d) {
