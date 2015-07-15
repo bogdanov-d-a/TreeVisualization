@@ -264,6 +264,8 @@ d3.json("data.json", function(error, treeDataRaw) {
 			});
 
 		linkExit.select("text")
+			.attr("x", source.x)
+			.attr("y", source.y)
 			.style("fill-opacity", 0);
 
 
