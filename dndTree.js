@@ -45,6 +45,10 @@ d3.json("data.json", function(error, treeDataRaw) {
 	var assignedKeys = 0;
 	var duration = 2500;
 
+	// size of pass bar
+	var passBarWidth = 25;
+	var passBarHeight = 5;
+
 	// size of the diagram
 	var viewerWidth = $(document).width();
 	var viewerHeight = $(document).height();
@@ -172,6 +176,26 @@ d3.json("data.json", function(error, treeDataRaw) {
 				return d.name;
 			})
 			.style("fill-opacity", 0);
+
+
+		// Add pass bars for leaf nodes
+		var leafNodes = nodeEnter.filter(function(d, i) {
+			return (!d.children && !d._children);
+		});
+
+		leafNodes.append("rect")
+			.attr("x", -passBarWidth / 2)
+			.attr("y", 10)
+			.attr("width", function(d) { return passBarWidth * d.passRatio; })
+			.attr("height", passBarHeight)
+			.style("fill", "green");
+
+		leafNodes.append("rect")
+			.attr("x", function(d) { return -passBarWidth / 2 + passBarWidth * d.passRatio; })
+			.attr("y", 10)
+			.attr("width", function(d) { return passBarWidth * (1 - d.passRatio); })
+			.attr("height", passBarHeight)
+			.style("fill", "red");
 
 
 		// Change the circle fill depending on whether it has children and is collapsed
