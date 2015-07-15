@@ -69,13 +69,6 @@ d3.json("data.json", function(error, treeDataRaw) {
 	// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
 	var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
-	// define the baseSvg, attaching a class for styling and the zoomListener
-	var baseSvg = d3.select("#tree-container").append("svg")
-		.attr("width", viewerWidth)
-		.attr("height", viewerHeight)
-		.attr("class", "overlay")
-		.call(zoomListener);
-
 
 	// Helper functions for collapsing and expanding nodes.
 
@@ -285,7 +278,12 @@ d3.json("data.json", function(error, treeDataRaw) {
 	}
 
 	// Append a group which holds all nodes and which the zoom Listener can act upon.
-	var svgGroup = baseSvg.append("g");
+	var svgGroup = d3.select("#tree-container").append("svg")
+		.attr("width", viewerWidth)
+		.attr("height", viewerHeight)
+		.attr("class", "overlay")
+		.call(zoomListener)
+		.append("g");
 
 	// Define the root
 	var root = getTreeDataRawSubtree(1);
