@@ -176,13 +176,13 @@ d3.json("data.json", function(error, treeDataRaw) {
 		});
 
 		// Update the nodes…
-		node = svgGroup.selectAll("g.node")
+		var gNodes = svgGroup.selectAll("g.node")
 			.data(nodes, function(d) {
 				return d.id || (d.id = ++i);
 			});
 
 		// Enter any new nodes at the parent's previous position.
-		var nodeEnter = node.enter().append("g")
+		var nodeEnter = gNodes.enter().append("g")
 			.attr("class", "node")
 			.attr("transform", function(d) {
 				return "translate(" + source.x0 + "," + source.y0 + ")";
@@ -207,14 +207,14 @@ d3.json("data.json", function(error, treeDataRaw) {
 			.style("fill-opacity", 0);
 
 		// Change the circle fill depending on whether it has children and is collapsed
-		node.select("circle.nodeCircle")
+		gNodes.select("circle.nodeCircle")
 			.attr("r", 4.5)
 			.style("fill", function(d) {
 				return d._children ? "lightsteelblue" : "#fff";
 			});
 
 		// Transition nodes to their new position.
-		var nodeUpdate = node.transition()
+		var nodeUpdate = gNodes.transition()
 			.duration(duration)
 			.attr("transform", function(d) {
 				return "translate(" + d.x + "," + d.y + ")";
@@ -225,7 +225,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 			.style("fill-opacity", 1);
 
 		// Transition exiting nodes to the parent's new position.
-		var nodeExit = node.exit().transition()
+		var nodeExit = gNodes.exit().transition()
 			.duration(duration)
 			.attr("transform", function(d) {
 				return "translate(" + source.x + "," + source.y + ")";
