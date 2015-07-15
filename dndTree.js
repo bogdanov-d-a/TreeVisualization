@@ -31,11 +31,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 		}
 		else
 		{
-			result.passed = root.passed;
-			result.failed = root.failed;
-
-			var tested = result.passed + result.failed;
-			result.passRatio = result.passed / tested;
+			result.passTotalRatio = root.passed / (root.passed + root.failed);
 		}
 
 		return result;
@@ -186,14 +182,14 @@ d3.json("data.json", function(error, treeDataRaw) {
 		leafNodes.append("rect")
 			.attr("x", -passBarWidth / 2)
 			.attr("y", 10)
-			.attr("width", function(d) { return passBarWidth * d.passRatio; })
+			.attr("width", function(d) { return passBarWidth * d.passTotalRatio; })
 			.attr("height", passBarHeight)
 			.style("fill", "green");
 
 		leafNodes.append("rect")
-			.attr("x", function(d) { return -passBarWidth / 2 + passBarWidth * d.passRatio; })
+			.attr("x", function(d) { return -passBarWidth / 2 + passBarWidth * d.passTotalRatio; })
 			.attr("y", 10)
-			.attr("width", function(d) { return passBarWidth * (1 - d.passRatio); })
+			.attr("width", function(d) { return passBarWidth * (1 - d.passTotalRatio); })
 			.attr("height", passBarHeight)
 			.style("fill", "red");
 
