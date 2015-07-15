@@ -15,14 +15,18 @@ d3.json("data.json", function(error, treeDataRaw) {
 	}
 
 	// Get treeDataRaw subtree in usual format
-	function getTreeDataRawSubtree(rootNumber) {
+	function getTreeDataRawSubtree(rootNumber, rootSide) {
 		var root = getTreeDataRawNode(rootNumber);
-		var result = { "name": root.title };
+		var result = {
+			"name": root.title,
+			"side": rootSide
+		};
 
 		if (root.leftChild) {
+			result.passMark = root.passMark;
 			result.children = [
-				getTreeDataRawSubtree(root.leftChild),
-				getTreeDataRawSubtree(root.rightChild)
+				getTreeDataRawSubtree(root.leftChild, "left"),
+				getTreeDataRawSubtree(root.rightChild, "right")
 			];
 		}
 
@@ -228,7 +232,17 @@ d3.json("data.json", function(error, treeDataRaw) {
 			.attr("y", source.y0)
 			.attr("text-anchor", "middle")
 			.text(function(d) {
-				return "no info";
+				var sign;
+				if (d.target.side == "left") {
+					sign = ">";
+				}
+				else if (d.target.side == "right") {
+					sign = "<=";
+				}
+				else {
+					throw new Error("Child side is incorrect");
+				}
+				return sign + " " + d.source.passMark;
 			})
 			.style("fill-opacity", 0);
 
@@ -285,7 +299,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 		.append("g");
 
 	// Define the root
-	var root = getTreeDataRawSubtree(1);
+	var root = getTreeDataRawSubtree(1, "root");
 	root.x0 = viewerWidth / 2;
 	root.y0 = 0;
 
