@@ -32,7 +32,6 @@ d3.json("data.json", function(error, treeDataRaw) {
 	// Misc. variables
 	var assignedKeys = 0;
 	var duration = 2500;
-	var root;
 
 	// size of the diagram
 	var viewerWidth = $(document).width();
@@ -289,7 +288,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 	var svgGroup = baseSvg.append("g");
 
 	// Define the root
-	root = getTreeDataRawSubtree(1);
+	var root = getTreeDataRawSubtree(1);
 	root.x0 = viewerHeight / 2;
 	root.y0 = 0;
 
