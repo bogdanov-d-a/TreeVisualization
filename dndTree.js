@@ -138,7 +138,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 		var levelWidth = [1];
 		function countChildrenLevelWidth(level, n) {
 			if (n.children && n.children.length > 0) {
-				if (levelWidth.length <= level + 1) {
+				while (levelWidth.length <= level + 1) {
 					levelWidth.push(0);
 				}
 
