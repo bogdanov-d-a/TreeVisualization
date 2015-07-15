@@ -29,6 +29,14 @@ d3.json("data.json", function(error, treeDataRaw) {
 				getTreeDataRawSubtree(root.rightChild, "right")
 			];
 		}
+		else
+		{
+			result.passed = root.passed;
+			result.failed = root.failed;
+
+			var tested = result.passed + result.failed;
+			result.passRatio = result.passed / tested;
+		}
 
 		return result;
 	};
