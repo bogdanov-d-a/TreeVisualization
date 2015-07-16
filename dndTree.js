@@ -137,8 +137,7 @@ function constructTree(root) {
 			.attr("r", 0);
 
 		nodeEnter.append("text")
-			.attr("y", -14)
-			.attr("dy", ".35em")
+			.attr("y", -10)
 			.attr('class', 'nodeText')
 			.attr("text-anchor", "middle")
 			.text(function(d) {
@@ -167,8 +166,7 @@ function constructTree(root) {
 			.style("fill", "red");
 
 		leafNodes.append("text")
-			.attr("y", 14)
-			.attr("dy", ".35em")
+			.attr("y", 18)
 			.attr("text-anchor", "middle")
 			.text(function(d) {
 				return d.passFailRatio;
