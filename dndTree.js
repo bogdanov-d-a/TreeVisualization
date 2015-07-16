@@ -1,42 +1,11 @@
+(function() {
+
 // Get JSON data and handle it
 d3.json("data.json", function(error, treeDataRaw) {
 	// Handle treeDataRaw get error
 	if (error) {
 		throw error;
 	}
-
-	function getTreeDataRawNode(number) {
-		for (var i = 0; i < treeDataRaw.length; ++i) {
-			if (treeDataRaw[i].nodeNumber == number) {
-				return treeDataRaw[i];
-			}
-		}
-		throw new Error("Node not found");
-	}
-
-	// Get treeDataRaw subtree in usual format
-	function getTreeDataRawSubtree(rootNumber, rootSide) {
-		var root = getTreeDataRawNode(rootNumber);
-		var result = {
-			"name": root.title,
-			"side": rootSide
-		};
-
-		if (root.leftChild) {
-			result.passMark = root.passMark;
-			result.children = [
-				getTreeDataRawSubtree(root.leftChild, "left"),
-				getTreeDataRawSubtree(root.rightChild, "right")
-			];
-		}
-		else
-		{
-			result.passFailRatio = "" + root.passed + " / " + root.failed;
-			result.passTotalRatio = root.passed / (root.passed + root.failed);
-		}
-
-		return result;
-	};
 
 	// Misc. variables
 	var assignedKeys = 0;
@@ -336,7 +305,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 		.append("g");
 
 	// Define the root
-	var root = getTreeDataRawSubtree(1, "root");
+	var root = convertTree(treeDataRaw);
 	root.x0 = viewerWidth / 2;
 	root.y0 = 0;
 
@@ -344,3 +313,43 @@ d3.json("data.json", function(error, treeDataRaw) {
 	update(root);
 	centerNode(root);
 });
+
+function convertTree(treeDataRaw)
+{
+	return getTreeDataRawSubtree(1, "root");
+
+	// Get treeDataRaw subtree in usual format
+	function getTreeDataRawSubtree(rootNumber, rootSide) {
+		var root = getTreeDataRawNode(rootNumber);
+		var result = {
+			"name": root.title,
+			"side": rootSide
+		};
+
+		if (root.leftChild) {
+			result.passMark = root.passMark;
+			result.children = [
+				getTreeDataRawSubtree(root.leftChild, "left"),
+				getTreeDataRawSubtree(root.rightChild, "right")
+			];
+		}
+		else
+		{
+			result.passFailRatio = "" + root.passed + " / " + root.failed;
+			result.passTotalRatio = root.passed / (root.passed + root.failed);
+		}
+
+		return result;
+	}
+
+	function getTreeDataRawNode(number) {
+		for (var i = 0; i < treeDataRaw.length; ++i) {
+			if (treeDataRaw[i].nodeNumber == number) {
+				return treeDataRaw[i];
+			}
+		}
+		throw new Error("Node not found");
+	}
+}
+
+})();
