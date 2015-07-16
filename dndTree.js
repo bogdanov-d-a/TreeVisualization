@@ -305,7 +305,7 @@ d3.json("data.json", function(error, treeDataRaw) {
 		.append("g");
 
 	// Define the root
-	var root = convertTree(treeDataRaw);
+	var root = convertTree(treeDataRaw, 1);
 	root.x0 = viewerWidth / 2;
 	root.y0 = 0;
 
@@ -314,38 +314,35 @@ d3.json("data.json", function(error, treeDataRaw) {
 	centerNode(root);
 });
 
-function convertTree(treeDataRaw)
-{
-	return getTreeDataRawSubtree(1, "root");
+// Convert input data tree to more usable format
+function convertTree(rawData, rootNumber) {
+	return getSubtree(rootNumber, "root");
 
-	// Get treeDataRaw subtree in usual format
-	function getTreeDataRawSubtree(rootNumber, rootSide) {
-		var root = getTreeDataRawNode(rootNumber);
+	function getSubtree(startNumber, startSide) {
+		var start = getNode(startNumber);
 		var result = {
-			"name": root.title,
-			"side": rootSide
+			"name": start.title,
+			"side": startSide
 		};
 
-		if (root.leftChild) {
-			result.passMark = root.passMark;
+		if (start.leftChild !== null) {
+			result.passMark = start.passMark;
 			result.children = [
-				getTreeDataRawSubtree(root.leftChild, "left"),
-				getTreeDataRawSubtree(root.rightChild, "right")
+				getSubtree(start.leftChild, "left"),
+				getSubtree(start.rightChild, "right")
 			];
-		}
-		else
-		{
-			result.passFailRatio = "" + root.passed + " / " + root.failed;
-			result.passTotalRatio = root.passed / (root.passed + root.failed);
+		} else {
+			result.passFailRatio = start.passed + " / " + start.failed;
+			result.passTotalRatio = start.passed / (start.passed + start.failed);
 		}
 
 		return result;
 	}
 
-	function getTreeDataRawNode(number) {
-		for (var i = 0; i < treeDataRaw.length; ++i) {
-			if (treeDataRaw[i].nodeNumber == number) {
-				return treeDataRaw[i];
+	function getNode(number) {
+		for (var i = 0; i < rawData.length; ++i) {
+			if (rawData[i].nodeNumber === number) {
+				return rawData[i];
 			}
 		}
 		throw new Error("Node not found");
