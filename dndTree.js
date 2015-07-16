@@ -1,13 +1,11 @@
 (function() {
 
 // Get JSON data and handle it
-d3.json("data.json", function(error, treeDataRaw) {
-	// Handle treeDataRaw get error
+d3.json("data.json", function(error, data) {
 	if (error) {
 		throw error;
 	}
-
-	constructTree(convertTree(treeDataRaw, 1));
+	constructTree(convertTree(data, 1));
 });
 
 // Create tree on the page
