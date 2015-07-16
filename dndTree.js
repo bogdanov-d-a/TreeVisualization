@@ -7,6 +7,11 @@ d3.json("data.json", function(error, treeDataRaw) {
 		throw error;
 	}
 
+	constructTree(convertTree(treeDataRaw, 1));
+});
+
+// Create tree on the page
+function constructTree(root) {
 	// Misc. variables
 	var assignedKeys = 0;
 	var duration = 750;
@@ -304,15 +309,13 @@ d3.json("data.json", function(error, treeDataRaw) {
 		.call(zoomListener)
 		.append("g");
 
-	// Define the root
-	var root = convertTree(treeDataRaw, 1);
 	root.x0 = viewerWidth / 2;
 	root.y0 = 0;
 
 	// Layout the tree initially and center on the root node.
 	update(root);
 	centerNode(root);
-});
+}
 
 // Convert input data tree to more usable format
 function convertTree(rawData, rootNumber) {
