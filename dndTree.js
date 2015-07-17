@@ -252,7 +252,7 @@ function constructTree(root) {
 				if (d.target.side == "left") {
 					sign = ">";
 				} else if (d.target.side == "right") {
-					sign = "<=";
+					sign = "≤";
 				} else {
 					throw new Error("Child side is incorrect");
 				}
