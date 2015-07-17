@@ -117,6 +117,7 @@ function constructTree(root) {
 				return d.id || (d.id = ++assignedKeys);
 			});
 
+
 		// Enter any new nodes at the parent's previous position.
 		var nodeEnter = gNodes.enter().append("g")
 			.attr("class", "node")
@@ -124,6 +125,7 @@ function constructTree(root) {
 				return "translate(" + source.x0 + "," + source.y0 + ")";
 			})
 			.on('click', click);
+
 		var leafNodeEnter = nodeEnter.filter(function(d, i) {
 			return (!d.children && !d._children);
 		});
@@ -150,14 +152,16 @@ function constructTree(root) {
 			.attr("y", 20)
 			.attr("width", function(d) { return passBarWidth * d.passTotalRatio; })
 			.attr("height", passBarHeight)
-			.style("fill", "green");
+			.style("fill", "green")
+			.style("fill-opacity", 0);
 
 		leafNodeEnter.append("rect")
 			.attr("x", function(d) { return -passBarWidth / 2 + passBarWidth * d.passTotalRatio; })
 			.attr("y", 20)
 			.attr("width", function(d) { return passBarWidth * (1 - d.passTotalRatio); })
 			.attr("height", passBarHeight)
-			.style("fill", "red");
+			.style("fill", "red")
+			.style("fill-opacity", 0);
 
 		leafNodeEnter.append("text")
 			.attr("y", 18)
@@ -174,7 +178,6 @@ function constructTree(root) {
 				return d._children ? "lightsteelblue" : "#fff";
 			});
 
-
 		// Transition nodes to their new position.
 		var nodeUpdate = gNodes.transition()
 			.duration(duration)
@@ -182,10 +185,15 @@ function constructTree(root) {
 				return "translate(" + d.x + "," + d.y + ")";
 			});
 
+
+		// Fade in new nodes
 		nodeUpdate.select("circle")
 			.attr("r", 4.5);
 
 		nodeUpdate.selectAll("text")
+			.style("fill-opacity", 1);
+
+		nodeUpdate.selectAll("rect")
 			.style("fill-opacity", 1);
 
 
@@ -197,10 +205,15 @@ function constructTree(root) {
 			})
 			.remove();
 
+
+		// Fade out exiting nodes
 		nodeExit.select("circle")
 			.attr("r", 0);
 
-		nodeExit.select("text")
+		nodeExit.selectAll("text")
+			.style("fill-opacity", 0);
+
+		nodeExit.selectAll("rect")
 			.style("fill-opacity", 0);
 
 
