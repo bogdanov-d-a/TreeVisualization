@@ -164,7 +164,8 @@ function constructTree(root) {
 			.attr("text-anchor", "middle")
 			.text(function(d) {
 				return d.passFailRatio;
-			});
+			})
+			.style("fill-opacity", 0);
 
 
 		// Change the circle fill depending on whether it has children and is collapsed
@@ -184,7 +185,7 @@ function constructTree(root) {
 		nodeUpdate.select("circle")
 			.attr("r", 4.5);
 
-		nodeUpdate.select("text")
+		nodeUpdate.selectAll("text")
 			.style("fill-opacity", 1);
 
 
