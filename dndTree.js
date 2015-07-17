@@ -40,13 +40,10 @@ function constructTree(root) {
 		}
 	}
 
-	// Define the zoom function for the zoomable tree
-	function zoom() {
-		svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-	}
-
 	// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-	var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+	var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", function() {
+		svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+	});
 
 
 	// Helper functions for collapsing and expanding nodes.
@@ -68,13 +65,11 @@ function constructTree(root) {
 	}
 
 
-	// Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
-	function centerNode(source) {
-		scale = zoomListener.scale();
-		x = -source.x0;
-		y = -source.y0;
-		x = x * scale + viewerWidth / 2;
-		y = y * scale + viewerHeight / 2;
+	// Function to center node when clicked so node doesn't get lost when collapsing with large amount of children.
+	function centerNode(node) {
+		var scale = zoomListener.scale();
+		var x = -node.x0 * scale + viewerWidth / 2;
+		var y = -node.y0 * scale + viewerHeight / 2;
 		d3.select('g').transition()
 			.duration(duration)
 			.attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
@@ -91,13 +86,12 @@ function constructTree(root) {
 			d.children = d._children;
 			d._children = null;
 		}
-		return d;
 	}
 
 	// Toggle children on click.
 	function click(d) {
 		if (d3.event.defaultPrevented) return; // click suppressed
-		d = toggleChildren(d);
+		toggleChildren(d);
 		update(d);
 		centerNode(d);
 	}
@@ -305,6 +299,7 @@ function constructTree(root) {
 		.call(zoomListener)
 		.append("g");
 
+	// Set start position
 	root.x0 = viewerWidth / 2;
 	root.y0 = 0;
 
