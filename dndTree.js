@@ -223,11 +223,12 @@ function constructTree(root) {
 				return d.target.id;
 			});
 
-
-		// Enter any new links at the parent's previous position.
+		// Enter any new links
 		var linkEnter = gLinks.enter().insert("g", "g")
 			.attr("class", "link");
 
+
+		// Append path and text at the parent's previous position.
 		linkEnter.append("path")
 			.attr('class', 'linkPath')
 			.attr("d", function(d) {
@@ -250,11 +251,9 @@ function constructTree(root) {
 				var sign;
 				if (d.target.side == "left") {
 					sign = ">";
-				}
-				else if (d.target.side == "right") {
+				} else if (d.target.side == "right") {
 					sign = "<=";
-				}
-				else {
+				} else {
 					throw new Error("Child side is incorrect");
 				}
 				return sign + " " + d.source.passMark;
@@ -262,10 +261,12 @@ function constructTree(root) {
 			.style("fill-opacity", 0);
 
 
-		// Transition links to their new position.
+		// Transition links
 		var linkUpdate = gLinks.transition()
 			.duration(duration);
 
+
+		// Move links to their new position and fade in label
 		linkUpdate.select("path")
 			.attr("d", diagonal);
 
@@ -275,11 +276,13 @@ function constructTree(root) {
 			.style("fill-opacity", 1);
 
 
-		// Transition exiting links to the parent's new position.
+		// Transition exiting links
 		var linkExit = gLinks.exit().transition()
 			.duration(duration)
 			.remove();
 
+
+		// Move exiting links to the parent's new position and fade out label
 		linkExit.select("path")
 			.attr("d", function(d) {
 				var o = {
@@ -298,7 +301,7 @@ function constructTree(root) {
 			.style("fill-opacity", 0);
 
 
-		// Stash the old positions for transition.
+		// Stash the old positions for transition for later use
 		nodes.forEach(function(d) {
 			d.x0 = d.x;
 			d.y0 = d.y;
@@ -313,7 +316,7 @@ function constructTree(root) {
 		.call(zoomListener)
 		.append("g");
 
-	// Set start position
+	// Set start position for all nodes
 	root.x0 = viewerWidth / 2;
 	root.y0 = 0;
 
