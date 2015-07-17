@@ -117,7 +117,6 @@ function constructTree(root) {
 				return d.id || (d.id = ++assignedKeys);
 			});
 
-
 		// Enter any new nodes at the parent's previous position.
 		var nodeEnter = gNodes.enter().append("g")
 			.attr("class", "node")
@@ -125,7 +124,12 @@ function constructTree(root) {
 				return "translate(" + source.x0 + "," + source.y0 + ")";
 			})
 			.on('click', click);
+		var leafNodeEnter = nodeEnter.filter(function(d, i) {
+			return (!d.children && !d._children);
+		});
 
+
+		// Append circle and node title
 		nodeEnter.append("circle")
 			.attr('class', 'nodeCircle')
 			.attr("r", 0);
@@ -140,26 +144,22 @@ function constructTree(root) {
 			.style("fill-opacity", 0);
 
 
-		// Add pass info for leaf nodes
-		var leafNodes = nodeEnter.filter(function(d, i) {
-			return (!d.children && !d._children);
-		});
-
-		leafNodes.append("rect")
+		// Append pass info for leaf nodes
+		leafNodeEnter.append("rect")
 			.attr("x", -passBarWidth / 2)
 			.attr("y", 20)
 			.attr("width", function(d) { return passBarWidth * d.passTotalRatio; })
 			.attr("height", passBarHeight)
 			.style("fill", "green");
 
-		leafNodes.append("rect")
+		leafNodeEnter.append("rect")
 			.attr("x", function(d) { return -passBarWidth / 2 + passBarWidth * d.passTotalRatio; })
 			.attr("y", 20)
 			.attr("width", function(d) { return passBarWidth * (1 - d.passTotalRatio); })
 			.attr("height", passBarHeight)
 			.style("fill", "red");
 
-		leafNodes.append("text")
+		leafNodeEnter.append("text")
 			.attr("y", 18)
 			.attr("text-anchor", "middle")
 			.text(function(d) {
